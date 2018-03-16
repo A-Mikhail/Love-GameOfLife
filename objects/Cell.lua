@@ -15,10 +15,12 @@ end
 function Cell:update(dt)
     Cell.super.update(self, dt)
 
-    if input:down('left') then print('left') self.x = self.x - cellSize end
-    if input:down('right') then self.x = self.x + cellSize end 
-    if input:down('up') then self.y = self.y + cellSize end
-    if input:down('bottom') then self.y = self.y - cellSize end
+    local speed = 8
+
+    if input:down('left') then self.x = self.x - cellSize * dt * speed end
+    if input:down('right') then self.x = self.x + cellSize * dt * speed end 
+    if input:down('up') then self.y = self.y - cellSize * dt * speed end
+    if input:down('down') then self.y = self.y + cellSize * dt * speed end
 end
 
 function Cell:draw()

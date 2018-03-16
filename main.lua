@@ -16,7 +16,7 @@ function love.load()
     input:bind('left', 'left')
     input:bind('right', 'right')
     input:bind('up', 'up')
-    input:bind('bottom', 'bottom')
+    input:bind('down', 'down')
 end
 
 function love.update(dt)
