@@ -2,27 +2,38 @@ require 'objects/GameObject'
 
 Cell = GameObject:extend()
 
-function Cell:new(area, x, y, opts)
-    Cell.super.new(self, area, x, y, opts)
+function Cell:new(area, pos, table, opts)
+    Cell.super.new(self, area, pos, table, opts)
 
     -- 8 px 
     cellSize = 8
 
-    self.h = cellSize 
+    self.position = pos 
+    self.grid = table
+    self.h = cellSize
     self.w = cellSize
+
+    input:bind('f4', function() self:die() end)
 end
 
 function Cell:update(dt)
     Cell.super.update(self, dt)
-
-    local speed = 8
-
-    if input:down('left') then self.x = self.x - cellSize * dt * speed end
-    if input:down('right') then self.x = self.x + cellSize * dt * speed end 
-    if input:down('up') then self.y = self.y - cellSize * dt * speed end
-    if input:down('down') then self.y = self.y + cellSize * dt * speed end
 end
 
 function Cell:draw()
-    love.graphics.rectangle("fill", self.x, self.y, self.h, self.w)
+    print(self.position)
+    love.graphics.setColor(222, 0, 122)
+    love.graphics.rectangle("fill", self.grid[self.position][2], self.grid[self.position][3], self.h, self.w)
+end
+
+function Cell:die()
+    self.dead = true
+
+    for i = 1, love.math.random(8, 12) do
+        self.area:addGameObject("DieParticle", self.x, self.y)
+    end
+end
+
+function Cell:destroy()
+    Cell.super.destroy(self)
 end

@@ -34,3 +34,8 @@ end
 function love.keypressed(key)
     suit.keypressed(key)
 end
+
+function Menu:destroy()
+    self.area:destroy()
+    self.area = nil
+end
