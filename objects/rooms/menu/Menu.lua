@@ -1,7 +1,8 @@
 Menu = Object:extend()
 
 function Menu:new()
-    love.window.setTitle("Menu")
+    self.area = Area(self)
+
     love.graphics.setBackgroundColor(255, 255, 255)
 end
 
@@ -18,7 +19,7 @@ function Menu:update(dt)
     suit.layout:padding(10, 10)
 
     if suit.Button("Start the Life", suit.layout:row(buttonWidth, buttonHeight)).hit then
-        current_room = Game()
+        gotoRoom("Game")
     end
 
     if suit.Button("Quit the Game", suit.layout:row()).hit then

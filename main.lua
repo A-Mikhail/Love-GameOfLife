@@ -9,14 +9,13 @@ function love.load()
     requireFiles(object_files)
 
     -- begin the game with a menu room
-    current_room = Menu()
+    rooms = {}
+    current_room = nil
+
+    gotoRoom("Menu")
 
     input = Input()
-
-    input:bind('left', 'left')
-    input:bind('right', 'right')
-    input:bind('up', 'up')
-    input:bind('down', 'down')
+    timer = Timer()
 
     input:bind('f1', function()
         print("Before collection: " .. collectgarbage("count") / 1024)
@@ -37,19 +36,15 @@ function love.draw()
     if current_room then current_room:draw() end
 end
 
-function addRoom(room_type, room_name, ...)
-    local room = _G[room_type](room_name, ...)
-    rooms[room_name] = room
-    return room
-end
-
 function gotoRoom(room_type, ...)
-    if current_room and current_room.destroy then
-        current_room:destroy()
-    end
+    if current_room and current_room.destroy then current_room:destroy() end
 
     current_room = _G[room_type](...)
+
+    love.window.setTitle(room_type)
 end
+
+-------------- Require objests class -----------------------
 
 function recursiveEnumerate(folder, file_list)
     local items = love.filesystem.getDirectoryItems(folder)

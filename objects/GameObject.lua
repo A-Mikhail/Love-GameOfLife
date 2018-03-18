@@ -25,5 +25,4 @@ end
 
 function GameObject:destroy()
     self.timer = {}
-    print(self.area:destroy())
 end
