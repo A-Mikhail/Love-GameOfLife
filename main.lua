@@ -1,7 +1,12 @@
-Object  = require 'libraries/classic/classic'
-Input   = require 'libraries/boipushy/input'
-suit    = require 'libraries/suit'
+Object  = require "libraries/classic/classic"
+Input   = require "libraries/boipushy/input"
+suit    = require "libraries/suit"
 Timer   = require "libraries/hump/timer"
+_       = require "libraries/moses/moses_min"
+
+-- Global screenX and Y
+screenX = love.graphics.getWidth()
+screenY = love.graphics.getHeight()
 
 function love.load()
     local object_files = {}
@@ -34,6 +39,13 @@ end
 
 function love.draw()
     if current_room then current_room:draw() end
+end
+
+-- redraw window on resize
+function love.resize()
+    if current_room then current_room:resize() end
+    screenX = love.graphics.getWidth()
+    screenY = love.graphics.getHeight()
 end
 
 function gotoRoom(room_type, ...)

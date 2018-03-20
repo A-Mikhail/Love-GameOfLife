@@ -6,11 +6,16 @@ function Game:new()
 
     self.main_canvas = love.graphics.newCanvas(screenX, screenY)
     
-    -- create the cells
+    -- create 10 cells
     for i = 1, 10 do 
         self.area:addGameObject("Cell", love.math.random(1, #grid), grid)
     end
 
+    -- create 15 gliders 
+    for i = 1, 15 do
+        self.area:addGameObject("Beehive", love.math.random(1, #grid), grid)
+    end
+    
     -- bind 'esc' button to change the room
     input:bind("escape", function() gotoRoom("Menu") end)
 end
@@ -30,7 +35,13 @@ function Game:draw()
     love.graphics.setBlendMode('alpha')
 end
 
+function Game:resize()
+    -- self.grid:resize()
+    -- self.area:resize()
+end
+
 function Game:destroy()
     self.area:destroy()
+    self.grid:destroy()
     self.area = nil
 end

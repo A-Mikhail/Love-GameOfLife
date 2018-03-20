@@ -1,33 +1,27 @@
 Grid = Object:extend()
 
 function Grid:new()
-    local screenX = love.graphics.getWidth()
-    local screenY = love.graphics.getHeight()
-
     -- generate the grid
     grid = {}
 
-    self.grid = grid
-
     local cellNum = 0
+    -- cells by default are dead or empty
+    local live = false
     cellSize = 8
-        
+
     for x = 0, screenX, cellSize do
         for y = 0, screenY, cellSize do
             cellNum = cellNum + 1
-            table.insert(grid, {cellNum, x, y})
+            table.insert(grid, {["x"] = x, ["y"] = y, ["cellNum"] = cellNum, ["live"] = live})
         end
     end
 end
 
-function Grid:update()
-    screenX = love.graphics.getWidth()
-    screenY = love.graphics.getHeight()
-end
-
-function Grid:draw()
+function Grid:resize()
+    self:new()
+    print("grid is resized")
 end
 
 function Grid:destroy()
-    self.grid = {}
+    grid = nil
 end

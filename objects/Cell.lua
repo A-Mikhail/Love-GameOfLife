@@ -2,20 +2,23 @@ require 'objects/GameObject'
 
 Cell = GameObject:extend()
 
-function Cell:new(area, pos, table, opts)
-    Cell.super.new(self, area, pos, table, opts)
+function Cell:new(area, position, table)
+    Cell.super.new(self, area, position, table)
 
-    self.position = pos 
-    self.grid = table
+    self.position   = position 
+    self.grid       = table
+
+    -- from global grid
     self.h = cellSize
     self.w = cellSize
+    self.x = self.grid[self.position].x
+    self.y = self.grid[self.position].y 
+    
+    self.live = self.grid[self.position].live
+    self.live = true
 
-    input:bind('f4', function() self:die() end)
-
-    timer:every(2, function() self.h = self.h / 2 
-        self.w = self.w / 2 
-        timer:after(1, function() self.h = self.h * 2 self.w = self.w * 2 end) 
-    end)
+    print(self.grid)
+    -- apply the rules for the new cell
 end
 
 function Cell:update(dt)
@@ -23,12 +26,15 @@ function Cell:update(dt)
 end
 
 function Cell:draw()
-    love.graphics.setColor(222, 0, 122)
-    love.graphics.rectangle("fill", self.grid[self.position][2], self.grid[self.position][3], self.h, self.w)    
+    if self.live then 
+        love.graphics.setColor(221, 0, 0)
+        love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+    else 
+        self.dead = true
+    end
 end
 
-function Cell:die()
-    self.dead = true
+function Cell:resize()
 end
 
 function Cell:destroy()
