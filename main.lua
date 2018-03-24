@@ -1,8 +1,7 @@
 Object  = require "libraries/classic/classic"
 Input   = require "libraries/boipushy/input"
+timer   = require "libraries/hump/timer"
 suit    = require "libraries/suit"
-Timer   = require "libraries/hump/timer"
-_       = require "libraries/moses/moses_min"
 
 -- Global screenX and Y
 screenX = love.graphics.getWidth()
@@ -20,7 +19,6 @@ function love.load()
     gotoRoom("Menu")
 
     input = Input()
-    timer = Timer()
 
     input:bind('f1', function()
         print("Before collection: " .. collectgarbage("count") / 1024)
@@ -34,7 +32,10 @@ function love.load()
 end
 
 function love.update(dt)
-    if current_room then current_room:update(dt) end
+    if current_room then 
+        current_room:update(dt) 
+        timer.update(dt)
+    end
 end
 
 function love.draw()

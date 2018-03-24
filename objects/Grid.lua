@@ -1,18 +1,17 @@
 Grid = Object:extend()
 
 function Grid:new()
-    -- generate the grid
+    self.area = Area(self)
+
+    -- size in width and height of one cell
+    cellSize = 6
+    
     grid = {}
 
-    local cellNum = 0
-    -- cells by default are dead or empty
-    local live = false
-    cellSize = 8
-
     for x = 0, screenX, cellSize do
+        grid[x] = {}
         for y = 0, screenY, cellSize do
-            cellNum = cellNum + 1
-            table.insert(grid, {["x"] = x, ["y"] = y, ["cellNum"] = cellNum, ["live"] = live})
+            grid[x][y] = love.math.random(0, 1)
         end
     end
 end

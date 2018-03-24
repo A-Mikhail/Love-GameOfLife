@@ -1,9 +1,7 @@
-Menu = Object:extend()
+Menu    = Object:extend()
 
 function Menu:new()
     self.area = Area(self)
-
-    love.graphics.setBackgroundColor(255, 255, 255)
 end
 
 function Menu:update(dt)
@@ -28,6 +26,7 @@ function Menu:update(dt)
 end
 
 function Menu:draw()
+    love.graphics.setBackgroundColor(255, 255, 255)
     -- draw the gui
     suit.draw()
 end

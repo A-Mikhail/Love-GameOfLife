@@ -1,26 +1,16 @@
 GameObject = Object:extend()
 
-function GameObject:new(area, x, y, opts)
-    local opts = opts or {}
-    if opts then 
-        for k, v in pairs(opts) do 
-            self[k] = v 
-        end
-    end
-
+function GameObject:new(area, x, y)
     self.area = area
     self.x = x
     self.y = y
     self.id = Utils:UUID()
     self.dead = false
-    self.timer = Timer()
+    self.timer = timer
 end
 
 function GameObject:update(dt)
-    if self.timer then self.timer:update(dt) end
-
-    self.x = self.x % screenX
-    self.y = self.y % screenY
+    if self.timer then self.timer.update(dt) end
 end
 
 function GameObject:draw()
