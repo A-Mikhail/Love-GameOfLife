@@ -1,10 +1,8 @@
 Grid = Object:extend()
 
 function Grid:new()
-    self.area = Area(self)
-
     -- size in width and height of one cell
-    cellSize = 6
+    cellSize = 4
     
     grid = {}
 
@@ -17,8 +15,8 @@ function Grid:new()
 end
 
 function Grid:resize()
-    self:new()
-    print("grid is resized")
+    -- self:new()
+    -- print("grid is resized")
 end
 
 function Grid:destroy()

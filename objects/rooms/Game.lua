@@ -4,7 +4,7 @@ function Game:new()
     self.area = Area(self)
     self.grid = Grid()
 
-    self.main_canvas = love.graphics.newCanvas(screenX, screenY)
+    self.main_canvas = love.graphics.newCanvas()
 
     self.area:addGameObject("Cell") 
 
@@ -20,7 +20,6 @@ function Game:draw()
     love.graphics.setColor(255, 255, 255, 255)
 
     love.graphics.setCanvas(self.main_canvas)
-    love.graphics.clear()
         self.area:draw()
     love.graphics.setCanvas()
 
@@ -29,8 +28,8 @@ function Game:draw()
     love.graphics.setBlendMode('alpha')
 
     -- Show FPS
-    love.graphics.setColor(0,0,0)
-    love.graphics.print("Current FPS: "..tostring(love.timer.getFPS()), 10, 10)
+    -- love.graphics.setColor(0,0,0)
+    -- love.graphics.print("Current FPS: "..tostring(love.timer.getFPS()), 10, 10)
 end
 
 function Game:resize()
@@ -41,5 +40,4 @@ end
 function Game:destroy()
     self.area:destroy()
     self.grid:destroy()
-    self.area = nil
 end

@@ -12,6 +12,10 @@ function love.load()
     recursiveEnumerate('objects', object_files)
     requireFiles(object_files)
 
+    -- set icon
+    windowIcon = love.image.newImageData("Icon.png")
+    icon = love.window.setIcon(windowIcon)
+    
     -- begin the game with a menu room
     rooms = {}
     current_room = nil
@@ -34,7 +38,6 @@ end
 function love.update(dt)
     if current_room then 
         current_room:update(dt) 
-        timer.update(dt)
     end
 end
 
@@ -50,10 +53,14 @@ function love.resize()
 end
 
 function gotoRoom(room_type, ...)
-    if current_room and current_room.destroy then current_room:destroy() end
+    if current_room and current_room.destroy then 
+        current_room:destroy() 
+        timer.clear()
+    end
 
     current_room = _G[room_type](...)
 
+    -- set title of the room
     love.window.setTitle(room_type)
 end
 
