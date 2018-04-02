@@ -1,22 +1,18 @@
 Grid = Object:extend()
 
-function Grid:new()
-    -- size in width and height of one cell
-    cellSize = 4
-    
+function Grid:new()   
     grid = {}
 
-    for x = 0, screenX, cellSize do
+    self.cellSize = cellSize
+    self.screenX  = screenX
+    self.screenY  = screenY
+
+    for x = 0, self.screenX, self.cellSize do
         grid[x] = {}
-        for y = 0, screenY, cellSize do
+        for y = 0, self.screenY, self.cellSize do
             grid[x][y] = love.math.random(0, 1)
         end
     end
-end
-
-function Grid:resize()
-    -- self:new()
-    -- print("grid is resized")
 end
 
 function Grid:destroy()

@@ -1,23 +1,22 @@
 function love.conf(t)
-    t.identity = nil
-    t.version = "0.10.2"
+    t.identity = "GameofLife"
+    t.version = "11.0"
     t.console = false
 
     t.window.title = "Game of Life - Love"
-    t.window.icon = nil
+    t.window.icon = "Icon.png"
     t.window.width = 800
     t.window.height = 600
     t.window.borderless = false
     t.window.resizable = true
-    t.window.minwidth = 1
-    t.window.minheight = 1
+    t.window.minwidth = 400
+    t.window.minheight = 300
     t.window.fullscreen = false
-    t.window.fullscreentype = "exclusive"
+    t.window.fullscreentype = "desktop"
     t.window.vsync = false
     t.window.fsaa = 0
     t.window.display = 1
     t.window.highdpi = true
-    t.window.srgb = false
     t.window.x = nil
     t.window.y = nil
 
@@ -33,6 +32,8 @@ function love.conf(t)
     t.modules.sound = true              -- Enable the sound module (boolean)
     t.modules.system = true             -- Enable the system module (boolean)
     t.modules.timer = true              -- Enable the timer module (boolean), Disabling it will result 0 delta time in love.update
+    t.modules.touch = true              -- Enable the touch module (boolean)
+    t.modules.video = true              -- Enable the video module (boolean)
     t.modules.window = true             -- Enable the window module (boolean)
     t.modules.thread = true             -- Enable the thread module (boolean)
 end

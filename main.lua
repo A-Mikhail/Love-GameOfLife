@@ -1,30 +1,31 @@
-Object  = require "libraries/classic/classic"
-Input   = require "libraries/boipushy/input"
-timer   = require "libraries/hump/timer"
-suit    = require "libraries/suit"
-
--- Global screenX and Y
-screenX = love.graphics.getWidth()
-screenY = love.graphics.getHeight()
+Object      = require "libraries/classic/classic"
+Input       = require "libraries/boipushy/input"
+Timer       = require "libraries/hump/timer"
+Suit        = require "libraries/suit"
 
 function love.load()
     local object_files = {}
     recursiveEnumerate('objects', object_files)
     requireFiles(object_files)
-
-    -- set icon
-    windowIcon = love.image.newImageData("Icon.png")
-    icon = love.window.setIcon(windowIcon)
     
+    -- global screenX and Y
+    screenX = love.graphics.getPixelWidth()
+    screenY = love.graphics.getPixelHeight()
+
+    cellSize = 4
+    tick = 0.3
+
+    Suit.theme.color.normal     = {fg = {70/255, 115/255, 94/255}, bg = {102/255, 1, 189/255}}
+    Suit.theme.color.hovered    = {fg = {1, 1, 1}, bg = {102/255, 168/255, 1}}
+    Suit.theme.color.active     = {fg = {1, 1, 1}, bg = {69/255, 111/255, 166/255, 1}}
+
     -- begin the game with a menu room
     rooms = {}
     current_room = nil
 
     gotoRoom("Menu")
 
-    input = Input()
-
-    input:bind('f1', function()
+    Input():bind('f1', function()
         print("Before collection: " .. collectgarbage("count") / 1024)
         collectgarbage()
         print("After collection: " .. collectgarbage("count") / 1024)
@@ -47,21 +48,20 @@ end
 
 -- redraw window on resize
 function love.resize()
-    if current_room then current_room:resize() end
-    screenX = love.graphics.getWidth()
-    screenY = love.graphics.getHeight()
+    screenX = love.graphics.getPixelWidth()
+    screenY = love.graphics.getPixelHeight()
 end
 
 function gotoRoom(room_type, ...)
     if current_room and current_room.destroy then 
         current_room:destroy() 
-        timer.clear()
+        Timer.clear()
     end
 
     current_room = _G[room_type](...)
 
     -- set title of the room
-    love.window.setTitle(room_type)
+    love.window.setTitle("Game of life - "..room_type)
 end
 
 -------------- Require objests class -----------------------
@@ -72,9 +72,9 @@ function recursiveEnumerate(folder, file_list)
     for _, item in ipairs(items) do
         local file = folder .. '/' .. item
 
-        if love.filesystem.isFile(file) then
+        if love.filesystem.getInfo(file, "file") then
             table.insert(file_list, file)
-        elseif love.filesystem.isDirectory(file) then
+        elseif love.filesystem.getInfo(file, "directory") then
             recursiveEnumerate(file, file_list)
         end
     end
@@ -85,6 +85,10 @@ function requireFiles(files)
         local file = file:sub(1, -5)
         require(file)
     end
+end
+
+function love.keypressed(key)
+    Suit.keypressed(key)
 end
 
 -- Leak detection

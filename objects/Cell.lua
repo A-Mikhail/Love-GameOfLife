@@ -3,30 +3,23 @@ require 'objects/GameObject'
 Cell = GameObject:extend()
 
 function Cell:new(area)
-    Cell.super.new(self, area) -- create object
+    Cell.super.new(self, area)
 
-    self.grid = grid -- point to the grid
-    -- from global grid
-    self.h = cellSize -- size of 1 cell - height
-    self.w = cellSize -- soze of the cell - width
+    -- create temp grid
+    local tempGrid = {}
     
-    self.cellCanvas = love.graphics.newCanvas() -- create canvas
-    
-    self.generation = 0 -- generation counter
     self.count = 0
+    self.grid = grid
+    self.tempGrid = tempGrid
+    self.cellSize = cellSize
+    self.tick = tick
+    self.cellCanvas = love.graphics.newCanvas(screenX, screenY)
 
-    -- evolve every 1 second
-    timer.every(0.3, function() 
-        self.generation = self.generation + 1 -- each call +1 to gen. 
-        self:evolve(self.generation) -- make evolution
+    Timer.every(self.tick, function() 
+        self:evolve()
     end)
-
-    -- -- blinker
-    -- self.grid[8][8] = 1
-    -- self.grid[12][8] = 1
-    -- self.grid[16][8] = 1
-
-    -- draw initial generation (0)
+    
+    -- draw initial generation
     self:drawCell()
 end
 
@@ -34,35 +27,31 @@ function Cell:update(dt)
     Cell.super.update(self, dt)
 end
 
-function Cell:draw()    
-    love.graphics.setBlendMode("alpha", "premultiplied")
-        love.graphics.draw(self.cellCanvas)
+function Cell:draw()  
+    love.graphics.setColor(1, 1, 1, 1)
+
+    love.graphics.setBlendMode('alpha', 'premultiplied')
+    love.graphics.draw(self.cellCanvas)
     love.graphics.setBlendMode('alpha')
 end
 
 function Cell:drawCell()
-    love.graphics.setCanvas(self.cellCanvas)
-
-    -- go through each cell
-    for x = 0, screenX, cellSize do
-        for y = 0, screenY, cellSize do
-            -- if cell is alive 
-            if self.grid[x][y] == 1 then
-                -- set color to blue   
-                love.graphics.setColor(173,	216, 230)
-                -- draw rectangle
-                love.graphics.rectangle("fill", x, y, self.w, self.h)
-            else
-                -- if cell is dead
-                -- set color to white
-                love.graphics.setColor(255, 255, 255)
-                -- draw
-                love.graphics.rectangle("fill", x, y, self.w, self.h)
+    self.cellCanvas:renderTo(function()
+        -- go through each cell
+        for x = 0, screenX, self.cellSize do
+            for y = 0, screenY, self.cellSize do
+                -- cell is alive 
+                if self.grid[x][y] == 1 then  
+                    love.graphics.setColor(102/255, 1, 189/255, 1)
+                    love.graphics.rectangle("fill", x, y, self.cellSize, self.cellSize)
+                else
+                    -- cell is dead
+                    love.graphics.setColor(1, 1, 1, 1)
+                    love.graphics.rectangle("fill", x, y, self.cellSize, self.cellSize)
+                end
             end
         end
-    end
-
-    love.graphics.setCanvas()
+    end)
 end
 
 function Cell:destroy()
@@ -71,72 +60,51 @@ end
 
 function Cell:countNeighbors(x, y)  
     -- count live neighbors of the cell (x,y)
-    if self.grid2[x][y] == 0 then 
+    if self.tempGrid[x][y] == 0 then 
         self.count = 0
     else
         self.count = -1
     end
 
-        -- check neighbours of the cell by going through
-    -- borders of the cell, excluding itself
-    for dx = -cellSize, cellSize, cellSize do 
-        for dy = -cellSize, cellSize, cellSize do
+    -- check neighbours of the cell by going through
+    -- borders of the cell
+    for dx = -self.cellSize, self.cellSize, self.cellSize do 
+        for dy = -self.cellSize, self.cellSize, self.cellSize do
 
-            -- if neigbor cells is equal to zero
-            -- then its our original cell
-            -- exclude it
-
-        
-                local i = (x + dx) % screenX -- make 'x' universe unbounded
-                local j = (y + dy) % screenY -- make 'y' universe unbounded
+            local i = (x + dx) % screenX -- make 'x' universe unbounded
+            local j = (y + dy) % screenY -- make 'y' universe unbounded
                 
-                -- if neighbour cell is alive then count it
-                if self.grid2[i][j] == 1 then
-                    self.count = self.count + 1
-                end
-           
-            
+            -- if neighbour cell is alive then count it
+            if self.tempGrid[i][j] == 1 then
+                self.count = self.count + 1
+            end            
         end 
     end
     
-    -- return number of the live neighbors
     return self.count
 end
 
-function Cell:evolve(generation)
-    -- evolve whole universe
-    grid2 = {}
-
-    self.grid2 = grid2
-
-    for x = 0, screenX, cellSize do
-        self.grid2[x] = {}
-        for y = 0, screenY, cellSize do
-            self.grid2[x][y] = self.grid[x][y]
+function Cell:evolve()
+    -- make temporary array
+    for x = 0, screenX, self.cellSize do
+        self.tempGrid[x] = {}
+        for y = 0, screenY, self.cellSize do
+            self.tempGrid[x][y] = self.grid[x][y]
         end
     end
+
     -- go through the universe
-    for x = 0, screenX, cellSize do
-        for y = 0, screenY, cellSize do
-            
-            -- send cell to count its neighbors cell
+    for x = 0, screenX, self.cellSize do
+        for y = 0, screenY, self.cellSize do
             neighbors = self:countNeighbors(x, y)
-     
+    
+            if neighbors < 2 or neighbors > 3 then
+                self.grid[x][y] = 0
+            end
 
-                if neighbors < 2 or neighbors > 3 then
-                    -- else its alive and neighbors
-                    -- is not 3 or 2 then the cell
-                    -- will die
-                    self.grid[x][y] = 0
-                end
-
-                -- and neighbors of the cell is 3
-                if neighbors == 3 then
-                    -- make cell alive
-                    self.grid[x][y] = 1
-                end
-  
-
+            if neighbors == 3 then
+                self.grid[x][y] = 1
+            end
         end
     end
 

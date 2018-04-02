@@ -3,7 +3,7 @@ GameObject = Object:extend()
 function GameObject:new(area)
     self.area = area
     self.id = Utils:UUID()
-    self.timer = timer
+    self.timer = Timer
 end
 
 function GameObject:update(dt)
