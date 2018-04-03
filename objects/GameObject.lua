@@ -11,5 +11,5 @@ function GameObject:update(dt)
 end
 
 function GameObject:destroy()
-    self.timer.clear()
+    if self.timer then self.timer.clear() end
 end

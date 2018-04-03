@@ -3,6 +3,7 @@ Area = Object:extend()
 function Area:new(room)
     self.room = room
     self.game_objects = {}
+    self.timer = Timer
 end
 
 function Area:update(dt)
@@ -38,5 +39,7 @@ function Area:destroy()
         table.remove(self.game_objects, i)
     end
 
+    if self.timer then self.timer.clear() end
+    
     self.game_objects = {}
 end

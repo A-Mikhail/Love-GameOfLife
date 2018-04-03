@@ -32,7 +32,10 @@ end
 
 function Menu:draw()
     love.graphics.setBackgroundColor(1, 1, 1, 1)
-    Suit.draw()
+end
+
+function Menu:resize()
+    -- do nothing
 end
 
 function Menu:destroy()

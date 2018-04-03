@@ -5,7 +5,7 @@ function Game:new()
     self.grid = Grid()
 
     -- create GO. Cell
-    self.area:addGameObject("Cell") 
+    cellGO = self.area:addGameObject("Cell") 
     
     -- bind 'esc' button to change the room
     Input():bind("escape", function() gotoRoom("Menu") end)
@@ -16,10 +16,18 @@ function Game:update(dt)
 end
 
 function Game:draw()
+    love.graphics.clear()
     self.area:draw()
 end
 
+function Game:resize()
+    cellGO:destroy()
+    cellGO.dead = true
+    
+    gotoRoom("Game")
+end
+
 function Game:destroy()
-    self.area:destroy()
     self.grid:destroy()
+    self.area:destroy()
 end

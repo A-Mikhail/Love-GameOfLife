@@ -36,8 +36,10 @@ end
 
 function About:draw()
     love.graphics.setBackgroundColor(1, 1, 1)
+end
 
-    Suit.draw()
+function About:resize()
+    -- do nothing
 end
 
 function About:destroy()

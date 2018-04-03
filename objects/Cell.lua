@@ -7,7 +7,8 @@ function Cell:new(area)
 
     -- create temp grid
     local tempGrid = {}
-    
+
+    self.area = area
     self.count = 0
     self.grid = grid
     self.tempGrid = tempGrid
@@ -29,10 +30,16 @@ end
 
 function Cell:draw()  
     love.graphics.setColor(1, 1, 1, 1)
-
+    
     love.graphics.setBlendMode('alpha', 'premultiplied')
     love.graphics.draw(self.cellCanvas)
     love.graphics.setBlendMode('alpha')
+end
+
+function Cell:destroy()
+    self.grid = {}
+    self.tempGrid = {}
+    Cell.super.destroy(self)
 end
 
 function Cell:drawCell()
@@ -52,10 +59,6 @@ function Cell:drawCell()
             end
         end
     end)
-end
-
-function Cell:destroy()
-    Cell.super.destroy(self)
 end
 
 function Cell:countNeighbors(x, y)  
@@ -97,7 +100,7 @@ function Cell:evolve()
     for x = 0, screenX, self.cellSize do
         for y = 0, screenY, self.cellSize do
             neighbors = self:countNeighbors(x, y)
-    
+            
             if neighbors < 2 or neighbors > 3 then
                 self.grid[x][y] = 0
             end

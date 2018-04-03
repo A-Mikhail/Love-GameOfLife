@@ -43,19 +43,25 @@ function love.update(dt)
 end
 
 function love.draw()
-    if current_room then current_room:draw() end
+    if current_room then 
+        Suit.draw()
+        current_room:draw() 
+    end
 end
 
 -- redraw window on resize
 function love.resize()
     screenX = love.graphics.getPixelWidth()
     screenY = love.graphics.getPixelHeight()
+
+    if current_room then 
+        current_room:resize()
+    end
 end
 
 function gotoRoom(room_type, ...)
     if current_room and current_room.destroy then 
         current_room:destroy() 
-        Timer.clear()
     end
 
     current_room = _G[room_type](...)
