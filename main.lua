@@ -11,13 +11,13 @@ function love.load()
     -- global screenX and Y
     screenX = love.graphics.getPixelWidth()
     screenY = love.graphics.getPixelHeight()
-
+    
     cellSize = 4
     tick = 0.3
-
-    Suit.theme.color.normal     = {fg = {70/255, 115/255, 94/255}, bg = {102/255, 1, 189/255}}
-    Suit.theme.color.hovered    = {fg = {1, 1, 1}, bg = {102/255, 168/255, 1}}
-    Suit.theme.color.active     = {fg = {1, 1, 1}, bg = {69/255, 111/255, 166/255, 1}}
+     
+    Suit.theme.color.normal     = {fg = {0.274, 0.45, 0.36}, bg = {0.4, 1, 0.741}}
+    Suit.theme.color.hovered    = {fg = {1, 1, 1}, bg = {0.4, 0.658, 1}}
+    Suit.theme.color.active     = {fg = {1, 1, 1}, bg = {0.27, 0.435, 0.65}}
 
     -- begin the game with a menu room
     rooms = {}

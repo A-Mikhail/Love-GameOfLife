@@ -39,6 +39,7 @@ end
 function Cell:destroy()
     self.grid = {}
     self.tempGrid = {}
+    
     Cell.super.destroy(self)
 end
 
@@ -49,11 +50,11 @@ function Cell:drawCell()
             for y = 0, screenY, self.cellSize do
                 -- cell is alive 
                 if self.grid[x][y] == 1 then  
-                    love.graphics.setColor(102/255, 1, 189/255, 1)
+                    love.graphics.setColor(0.4, 1, 0.741)
                     love.graphics.rectangle("fill", x, y, self.cellSize, self.cellSize)
                 else
                     -- cell is dead
-                    love.graphics.setColor(1, 1, 1, 1)
+                    love.graphics.setColor(1, 1, 1)
                     love.graphics.rectangle("fill", x, y, self.cellSize, self.cellSize)
                 end
             end
@@ -74,11 +75,13 @@ function Cell:countNeighbors(x, y)
     for dx = -self.cellSize, self.cellSize, self.cellSize do 
         for dy = -self.cellSize, self.cellSize, self.cellSize do
 
-            local i = (x + dx) % screenX -- make 'x' universe unbounded
-            local j = (y + dy) % screenY -- make 'y' universe unbounded
-                
+            local i = x + dx
+            local j = y + dy
+               
             -- if neighbour cell is alive then count it
-            if self.tempGrid[i][j] == 1 then
+            if i >= 0 and i < screenX 
+            and j >= 0 and j < screenY 
+            and self.tempGrid[i][j] == 1 then
                 self.count = self.count + 1
             end            
         end 

@@ -16,14 +16,13 @@ function Game:update(dt)
 end
 
 function Game:draw()
-    love.graphics.clear()
+    love.graphics.clear({1, 1, 1})
     self.area:draw()
 end
 
 function Game:resize()
     cellGO:destroy()
-    cellGO.dead = true
-    
+
     gotoRoom("Game")
 end
 

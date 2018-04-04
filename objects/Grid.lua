@@ -6,7 +6,7 @@ function Grid:new()
     self.cellSize = cellSize
     self.screenX  = screenX
     self.screenY  = screenY
-
+    
     for x = 0, self.screenX, self.cellSize do
         grid[x] = {}
         for y = 0, self.screenY, self.cellSize do
