@@ -3,8 +3,8 @@ function love.conf(t)
     t.version = "11.0"
     t.console = false
 
-    t.window.title = "Game of Life - Love"
-    t.window.icon = "Icon.png"
+    t.window.title = "Game of Life - Part 1"
+    t.window.icon = nil
     t.window.width = 800
     t.window.height = 600
     t.window.borderless = false
